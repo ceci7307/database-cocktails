@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Cocktails</title>
+
+    <style>
+      img {
+        max-width: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container"></main>
+    <button>Add cocktail</button>
+    <template id="template">
+      <article id="article">
+        <h1 class="data-navn"></h1>
+        <p class="data-txt1"></p>
+        <p class="data-txt2"></p>
+        <img class="data-billede" src="" alt="" />
+      </article>
+    </template>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", get);
+      function get() {
+        fetch("https://cocktails-ef01.restdb.io/rest/cocktails?idtolink=true", {
+          method: "get",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "x-apikey": "5c7cef83cac6621685acbaf0",
+            "cache-control": "no-cache"
+          }
+        })
+          .then(res => res.json())
+          .then(data => {
+            data.forEach(showData);
+          });
+      }
+
+      function post(nyCocktail) {
+        const data = {
+          Navn: "Espresso Martini",
+          Svaerhedsgrad: 3,
+          Ingredienser: "Espresso\nVodka \nKahlua",
+          Fremgangsmaade: "Shakes og serveres i martini glas"
+        };
+
+        const postData = JSON.stringify(nyCocktail);
+        fetch("https://cocktails-ef01.restdb.io/rest/cocktails", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "x-apikey": "5c7cef83cac6621685acbaf0",
+            "cache-control": "no-cache"
+          },
+          body: postData
+        })
+          .then(res => res.json())
+          .then(data => showData(data));
+
+        get();
+
+        document.querySelector("button").addEventListener("click", () => {
+          const obj = {
+            Navn: "Espresso",
+            Svaerhedsgrad: 3,
+            Ingredienser: "Espresso\nVodka \nKahlua",
+            Fremgangsmaade: "blablanankdkhws"
+          };
+          post(obj);
+        });
+      }
+
+      function showData(cocktail) {
+        const template = document.querySelector("#template").content;
+        const klon = template.cloneNode(true);
+        klon.querySelector(".data-navn").textContent = cocktail.Navn;
+        klon.querySelector(".data-txt1").textContent = cocktail.Ingredienser;
+        klon.querySelector(".data-txt2").textContent = cocktail.Fremgangsmaade;
+        klon.querySelector("img").src = cocktail.Billede_0;
+
+        document.querySelector(".container").appendChild(klon);
+      }
+    </script>
+  </body>
+</html>
