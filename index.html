@@ -38,17 +38,11 @@
           .then(res => res.json())
           .then(data => {
             data.forEach(showData);
+            console.log(data);
           });
       }
 
       function post(nyCocktail) {
-        const data = {
-          Navn: "Espresso Martini",
-          Svaerhedsgrad: 3,
-          Ingredienser: "Espresso\nVodka \nKahlua",
-          Fremgangsmaade: "Shakes og serveres i martini glas"
-        };
-
         const postData = JSON.stringify(nyCocktail);
         fetch("https://cocktails-ef01.restdb.io/rest/cocktails", {
           method: "post",
@@ -62,8 +56,6 @@
           .then(res => res.json())
           .then(data => showData(data));
 
-        get();
-
         document.querySelector("button").addEventListener("click", () => {
           const obj = {
             Navn: "Espresso",
@@ -73,6 +65,20 @@
           };
           post(obj);
         });
+        get();
+      }
+
+      function slet(id) {
+        fetch("https://cocktails-ef01.restdb.io/rest/cocktails/" + id, {
+          method: "delete",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "x-apikey": "5c7cef83cac6621685acbaf0",
+            "cache-control": "no-cache"
+          }
+        })
+          .then(res => res.json())
+          .then(data => console.log(data));
       }
 
       function showData(cocktail) {
