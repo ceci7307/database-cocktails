@@ -23,7 +23,27 @@
         <img class="data-billede" src="" alt="" />
       </article>
     </template>
+    <fieldset>
+      <legend><h1>Vil du tilføje en cocktail til siden?</h1></legend>
+      <form>
+        <span>Navn på cocktailen:</span>
 
+        <input required type="text" name="navn" placeholder="Fx. Margarita" />
+        <br /><br />
+
+        <span>Indtast cocktailens ingredienser:</span>
+        <input type="text" name="txt1" placeholder="fx. lime, tequila, ..." />
+        <br /><br />
+        <span>Fremgangsmåde</span>
+        <input
+          type="text"
+          name="txt2"
+          placeholder="Fx. blendes med is og serveres i margarita glas"
+        />
+        <br /><br />
+        <input type="submit" name="tilføj" value="Tilføj cocktailen" />
+      </form>
+    </fieldset>
     <script>
       document.addEventListener("DOMContentLoaded", get);
       function get() {
