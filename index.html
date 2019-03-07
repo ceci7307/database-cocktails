@@ -14,7 +14,7 @@
   </head>
   <body>
     <main class="container"></main>
-    <button>Add cocktail</button>
+
     <template id="template">
       <article id="article">
         <h1 class="data-navn"></h1>
@@ -25,7 +25,7 @@
     </template>
     <fieldset>
       <legend><h1>Vil du tilføje en cocktail til siden?</h1></legend>
-      <form>
+      <form id="formular">
         <span>Navn på cocktailen:</span>
 
         <input required type="text" name="navn" placeholder="Fx. Margarita" />
@@ -53,12 +53,13 @@
         <br /><br />
         <span>Tilføj billede:</span> <input type="file" name="billede" />
         <br /><br />
-        <input type="submit" name="tilføj" value="Tilføj cocktailen" />
+        <input type="submit" name="tilfoej" value="Tilføj cocktailen" />
       </form>
     </fieldset>
     <script>
       document.addEventListener("DOMContentLoaded", get);
       function get() {
+        // Syncs data / Finds data
         fetch("https://cocktails-ef01.restdb.io/rest/cocktails?idtolink=true", {
           method: "get",
           headers: {
@@ -75,6 +76,7 @@
       }
 
       function post(nyCocktail) {
+        //sends a request to add new data to the datasheet
         const postData = JSON.stringify(nyCocktail);
         fetch("https://cocktails-ef01.restdb.io/rest/cocktails", {
           method: "post",
@@ -86,21 +88,28 @@
           body: postData
         })
           .then(res => res.json())
-          .then(data => showData(data));
-
-        document.querySelector("button").addEventListener("click", () => {
-          const obj = {
-            Navn: "Espresso",
-            Svaerhedsgrad: 3,
-            Ingredienser: "Espresso\nVodka \nKahlua",
-            Fremgangsmaade: "blablanankdkhws"
-          };
-          post(obj);
-        });
-        get();
+          .then(data => {
+            console.log(data);
+            showData(data);
+          });
       }
 
+      // Makes the form work. This one is global
+      document.querySelector("#formular");
+      formular.addEventListener("submit", e => {
+        formular.elements.tilfoej.disabled = true; //Ikke nødvendig
+        e.preventDefault();
+        console.log("submitted");
+        const payload = {
+          Navn: formular.elements.navn.value,
+          Ingredienser: formular.elements.txt1.value,
+          Fremgangsmaade: formular.elements.txt2.value
+        };
+        post(payload);
+      });
+
       function slet(id) {
+        // Deletes data. Skal kaldes et sted
         fetch("https://cocktails-ef01.restdb.io/rest/cocktails/" + id, {
           method: "delete",
           headers: {
