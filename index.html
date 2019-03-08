@@ -21,6 +21,7 @@
         <p class="data-txt1"></p>
         <p class="data-txt2"></p>
         <img class="data-billede" src="" alt="" />
+        <button class="slet">slet</button>
       </article>
     </template>
     <fieldset>
@@ -110,6 +111,7 @@
 
       function slet(id) {
         // Deletes data. Skal kaldes et sted
+
         fetch("https://cocktails-ef01.restdb.io/rest/cocktails/" + id, {
           method: "delete",
           headers: {
@@ -129,6 +131,12 @@
         klon.querySelector(".data-txt1").textContent = cocktail.Ingredienser;
         klon.querySelector(".data-txt2").textContent = cocktail.Fremgangsmaade;
         klon.querySelector("img").src = cocktail.Billede_0;
+        klon.querySelector("#article").dataset.id = cocktail._id;
+        klon.querySelector(".slet").addEventListener("click", e => {
+          //console.log(e.target);
+          e.target.parentElement.remove();
+          slet(cocktail._id);
+        });
 
         document.querySelector(".container").appendChild(klon);
       }
